@@ -208,12 +208,21 @@ export default function Home() {
       }}>
         <div style={{ ...s.section, display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 72 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <span style={{ fontSize: 20, fontWeight: 800, letterSpacing: -0.5 }}>
-              AiT<span style={{ color: T.teal }}>Agency</span>
-            </span>
-            <span style={{ background: T.teal, color: T.bg, fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20 }}>
-              by Intelligent IT
-            </span>
+            <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1 }}>
+              <span style={{ fontSize: 20, fontWeight: 800, letterSpacing: -0.5 }}>
+                AiT<span style={{ color: T.teal }}>Agency</span>
+              </span>
+              <a
+                href="https://intelligentit.io"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ fontSize: 11, color: T.muted, textDecoration: 'none', marginTop: 3, letterSpacing: 0.2 }}
+                onMouseEnter={e => (e.currentTarget.style.color = '#bbb')}
+                onMouseLeave={e => (e.currentTarget.style.color = T.muted)}
+              >
+                By Intelligent Group
+              </a>
+            </div>
           </div>
           <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
             <a href="#how-it-works" style={{ color: T.muted, fontSize: 14, textDecoration: 'none' }}>How It Works</a>
@@ -382,7 +391,7 @@ export default function Home() {
           Enterprise Infrastructure Behind Every AI Worker
         </h2>
         <p style={{ fontSize: 17, color: T.muted, marginBottom: 56, maxWidth: 560 }}>
-          We don't use generic no-code tools. Every AI worker runs on our production-grade stack — built for security, compliance, and scale.
+          We don’t use generic no-code tools. Every AI worker runs on our production-grade stack — built for security, compliance, and scale.
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20 }}>
           {stack.map((item, i) => (
@@ -394,6 +403,50 @@ export default function Home() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ── ABOUT / TRUST (Endorsed Brand) ── */}
+      <section style={{ background: '#05D2AB08', borderTop: `1px solid #05D2AB18`, borderBottom: `1px solid #05D2AB18`, padding: '72px 24px' }}>
+        <div style={{ ...s.section, maxWidth: 860 }}>
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 20 }}>
+            <div style={{ ...s.badge, marginBottom: 0 }}>ABOUT US</div>
+          </div>
+          <h2 style={{ fontSize: 'clamp(1.6rem, 2.5vw, 2.2rem)', fontWeight: 800, marginBottom: 20, letterSpacing: -0.5 }}>
+            AI Specialists. Full-Stack Backing.
+          </h2>
+          <p style={{ fontSize: 16, color: T.muted, lineHeight: 1.8, marginBottom: 24, maxWidth: 740 }}>
+            AiT Agency is built by the team at{' '}
+            <a href="https://intelligentit.io" target="_blank" rel="noopener noreferrer" style={{ color: T.teal, textDecoration: 'none' }}>
+              Intelligent Group
+            </a>
+            {' '}— a full-service managed IT and security provider serving professional services firms.
+            When you work with AiT Agency, you get AI specialists backed by full IT infrastructure, security operations,
+            and managed services depth. We don’t just build your AI worker and hand you the keys — we keep it running inside
+            a production-grade platform we control end-to-end.
+          </p>
+          <p style={{ fontSize: 16, color: T.muted, lineHeight: 1.8, marginBottom: 28, maxWidth: 740 }}>
+            Need full IT management alongside your AI stack?{' '}
+            <a href="https://intelligentit.io" target="_blank" rel="noopener noreferrer" style={{ color: T.teal, fontWeight: 600, textDecoration: 'none' }}>
+              intelligentit.io →
+            </a>
+          </p>
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            {[
+              { icon: '🛡️', label: 'SOC Sentinel security operations' },
+              { icon: '🖥️', label: 'Managed IT & Microsoft 365' },
+              { icon: '📋', label: 'Compliance & audit readiness' },
+              { icon: '🔐', label: 'Identity & access management' },
+            ].map(({ icon, label }) => (
+              <div key={label} style={{
+                display: 'flex', alignItems: 'center', gap: 8,
+                background: T.card, border: `1px solid ${T.border}`,
+                borderRadius: 8, padding: '8px 14px', fontSize: 13, color: '#ccc',
+              }}>
+                <span>{icon}</span> {label}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -475,7 +528,7 @@ export default function Home() {
           The Honest Comparison
         </h2>
         <p style={{ fontSize: 17, color: T.muted, marginBottom: 56, maxWidth: 520 }}>
-          No-code tools and AI platforms are great — for simple workflows. Here's why clients choose us for anything with real stakes.
+          No-code tools and AI platforms are great — for simple workflows. Here’s why clients choose us for anything with real stakes.
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           {whyNot.map((item, i) => (
@@ -494,6 +547,65 @@ export default function Home() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ── NEED MORE THAN AI? ── */}
+      <section style={{ ...s.section, paddingTop: 96, paddingBottom: 80 }}>
+        <div style={{ maxWidth: 860 }}>
+          <div style={s.badge}>NEED MORE THAN AI?</div>
+          <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', fontWeight: 800, marginBottom: 20, letterSpacing: -0.5 }}>
+            One Relationship. The Full Stack.
+          </h2>
+          <p style={{ fontSize: 17, color: T.muted, lineHeight: 1.8, marginBottom: 32, maxWidth: 680 }}>
+            AiT Agency clients have access to the full{' '}
+            <a href="https://intelligentit.io" target="_blank" rel="noopener noreferrer" style={{ color: T.teal, textDecoration: 'none' }}>
+              Intelligent Group
+            </a>
+            {' '}suite — managed IT, Microsoft 365, security operations, and compliance.
+            Whether you need your AI worker connected to your existing infrastructure, an MDR overlay for your new
+            AI data flows, or a single vendor to cover your entire technology stack, we have you covered.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20, marginBottom: 40 }}>
+            {[
+              {
+                icon: '🖥️',
+                title: 'Managed IT & M365',
+                desc: 'Full IT support, Microsoft 365 admin, device management, and helpdesk for your whole team.',
+              },
+              {
+                icon: '🛡️',
+                title: 'Security Operations',
+                desc: 'SOC monitoring, MDR, SentinelOne EDR, identity protection, and compliance reporting.',
+              },
+              {
+                icon: '🔗',
+                title: 'Infrastructure Integration',
+                desc: 'Your AI workers connect to your existing stack — we own the integration, security, and uptime.',
+              },
+            ].map((item, i) => (
+              <div key={i} style={{ ...s.card, display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+                <span style={{ fontSize: 28, lineHeight: 1 }}>{item.icon}</span>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 6 }}>{item.title}</div>
+                  <div style={{ fontSize: 13, color: T.muted, lineHeight: 1.6 }}>{item.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <a
+            href="https://intelligentit.io"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              background: 'transparent', color: T.teal,
+              border: `1px solid ${T.teal}40`, borderRadius: 8,
+              padding: '12px 24px', fontWeight: 700, fontSize: 15, textDecoration: 'none',
+            }}
+          >
+            See all services at intelligentit.io →
+          </a>
         </div>
       </section>
 
@@ -585,16 +697,61 @@ export default function Home() {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer style={{ background: T.bg, borderTop: `1px solid ${T.border}`, padding: '40px 24px' }}>
-        <div style={{ ...s.section, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
-          <div>
-            <span style={{ fontSize: 16, fontWeight: 800 }}>AiT<span style={{ color: T.teal }}>Agency</span></span>
-            <span style={{ color: T.dim, fontSize: 13, marginLeft: 8 }}>by Intelligent IT · intelligentit.io</span>
+      <footer style={{ background: T.bg, borderTop: `1px solid ${T.border}`, padding: '48px 24px 36px' }}>
+        <div style={{ ...s.section }}>
+          {/* Cross-reference row */}
+          <div style={{
+            background: T.card, border: `1px solid ${T.border}`,
+            borderRadius: 12, padding: '20px 28px',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            flexWrap: 'wrap', gap: 16, marginBottom: 36,
+          }}>
+            <div>
+              <div style={{ fontSize: 13, color: T.muted, marginBottom: 4 }}>
+                AiT Agency is the AI practice of{' '}
+                <a href="https://intelligentit.io" target="_blank" rel="noopener noreferrer" style={{ color: T.teal, textDecoration: 'none', fontWeight: 600 }}>
+                  Intelligent Group
+                </a>
+                . Full IT management, security, and Microsoft 365.
+              </div>
+              <div style={{ fontSize: 12, color: T.dim }}>
+                Need the complete stack? Everything at{' '}
+                <a href="https://intelligentit.io" target="_blank" rel="noopener noreferrer" style={{ color: T.teal, textDecoration: 'none' }}>
+                  intelligentit.io
+                </a>
+              </div>
+            </div>
+            <a
+              href="https://intelligentit.io"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                background: 'transparent', color: T.teal,
+                border: `1px solid ${T.teal}40`, borderRadius: 6,
+                padding: '8px 18px', fontWeight: 700, fontSize: 13, textDecoration: 'none',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              intelligentit.io →
+            </a>
           </div>
-          <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
-            <a href="https://intelligentit.io" style={{ color: T.muted, fontSize: 13, textDecoration: 'none' }}>Intelligent IT</a>
-            <a href="https://intelligentit.io/pages/ai-agency.html" style={{ color: T.muted, fontSize: 13, textDecoration: 'none' }}>Full Offer</a>
-            <a href="https://intelligentit.io/book/" style={{ color: T.muted, fontSize: 13, textDecoration: 'none' }}>Book a Call</a>
+
+          {/* Bottom nav + copyright */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                <span style={{ fontSize: 16, fontWeight: 800 }}>AiT<span style={{ color: T.teal }}>Agency</span></span>
+                <span style={{ color: T.dim, fontSize: 12 }}>an Intelligent Group practice</span>
+              </div>
+              <div style={{ fontSize: 12, color: T.dim }}>
+                © 2026 Intelligent Group. AiT Agency is an Intelligent Group practice.
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+              <a href="https://intelligentit.io" target="_blank" rel="noopener noreferrer" style={{ color: T.muted, fontSize: 13, textDecoration: 'none' }}>Intelligent Group</a>
+              <a href="https://intelligentit.io/pages/ai-agency.html" style={{ color: T.muted, fontSize: 13, textDecoration: 'none' }}>Full Offer</a>
+              <a href="https://intelligentit.io/book/" style={{ color: T.muted, fontSize: 13, textDecoration: 'none' }}>Book a Call</a>
+            </div>
           </div>
         </div>
       </footer>
