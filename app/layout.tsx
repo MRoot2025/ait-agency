@@ -17,9 +17,29 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "AiT Agency",
+  "url": "https://aitagency.ai",
+  "description": "AI specialist practice building custom AI employees for businesses — blueprint, build, and managed.",
+  "parentOrganization": {
+    "@type": "Organization",
+    "name": "Intelligent Group",
+    "url": "https://intelligentit.io",
+    "description": "Full-service managed IT and security provider serving professional services firms."
+  }
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={geist.variable}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-screen flex flex-col">{children}</body>
     </html>
   );
