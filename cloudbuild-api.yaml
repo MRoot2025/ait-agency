@@ -1,5 +1,8 @@
 steps:
-  # Build image and tag with both SHORT_SHA (immutable) and latest (deploy target)
+  # Build image — tag with SHORT_SHA (immutable audit trail) and latest (deploy target).
+  # NOTE: $SHORT_SHA/$PROJECT_ID resolve inside Cloud Build steps but NOT in the top-level
+  # `images:` list (which gcloud CLI validates before the build runs). Keep only the static
+  # :latest tag in `images:` to pass submit-time validation.
   - name: 'gcr.io/cloud-builders/docker'
     id: build
     args:
@@ -12,19 +15,20 @@ steps:
       - us-central1-docker.pkg.dev/$PROJECT_ID/containers/ait-agency:latest
       - .
 
-  # Push both tags
+  # Push immutable SHA tag (audit trail / rollback)
   - name: 'gcr.io/cloud-builders/docker'
     id: push-sha
     args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/containers/ait-agency:$SHORT_SHA']
     waitFor: ['build']
 
+  # Push :latest — the tag Cloud Run deploy step targets
   - name: 'gcr.io/cloud-builders/docker'
     id: push-latest
     args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/containers/ait-agency:latest']
     waitFor: ['build']
 
+# Only :latest in images: — gcloud submit validates this before $SHORT_SHA is resolved
 images:
-  - 'us-central1-docker.pkg.dev/$PROJECT_ID/containers/ait-agency:$SHORT_SHA'
   - 'us-central1-docker.pkg.dev/$PROJECT_ID/containers/ait-agency:latest'
 
 options:
