@@ -1,0 +1,32 @@
+steps:
+  # Build image and tag with both SHORT_SHA (immutable) and latest (deploy target)
+  - name: 'gcr.io/cloud-builders/docker'
+    id: build
+    args:
+      - build
+      - -f
+      - Dockerfile
+      - -t
+      - us-central1-docker.pkg.dev/$PROJECT_ID/containers/ait-agency:$SHORT_SHA
+      - -t
+      - us-central1-docker.pkg.dev/$PROJECT_ID/containers/ait-agency:latest
+      - .
+
+  # Push both tags
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-sha
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/containers/ait-agency:$SHORT_SHA']
+    waitFor: ['build']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-latest
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/containers/ait-agency:latest']
+    waitFor: ['build']
+
+images:
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/containers/ait-agency:$SHORT_SHA'
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/containers/ait-agency:latest'
+
+options:
+  machineType: 'E2_MEDIUM'
+  logging: CLOUD_LOGGING_ONLY
