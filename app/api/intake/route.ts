@@ -1,14 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { z } from 'zod'
 
-export async function POST(req: NextRequest) {
-  const body = await req.json()
-  const { name, email, company, role, processToAutomate, monthlyRevenue } = body
+const IntakeSchema = z.object({
+  name: z.string().min(1, 'Name is required').max(200),
+  email: z.string().email('Invalid email address').max(320),
+  company: z.string().min(1, 'Company is required').max(200),
+  role: z.string().max(200).optional(),
+  processToAutomate: z.string().max(5000).optional(),
+  monthlyRevenue: z.string().max(100).optional(),
+})
 
-  // Validate required fields
-  if (!name || !email || !company) {
-    return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+type ErrorResponse = { error: string; code: string; details?: unknown }
+
+export async function POST(req: NextRequest): Promise<NextResponse> {
+  // Parse and validate input
+  let body: unknown
+  try {
+    body = await req.json()
+  } catch {
+    return NextResponse.json<ErrorResponse>(
+      { error: 'Invalid JSON body', code: 'INVALID_JSON' },
+      { status: 400 }
+    )
   }
+
+  const parsed = IntakeSchema.safeParse(body)
+  if (!parsed.success) {
+    return NextResponse.json<ErrorResponse>(
+      {
+        error: 'Validation failed',
+        code: 'VALIDATION_ERROR',
+        details: parsed.error.flatten().fieldErrors,
+      },
+      { status: 400 }
+    )
+  }
+
+  const { name, email, company, role, processToAutomate, monthlyRevenue } = parsed.data
 
   // Lazy-init Supabase client inside handler (avoids build-time crash when env not available)
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -16,12 +45,14 @@ export async function POST(req: NextRequest) {
 
   if (!supabaseUrl || !supabaseKey) {
     console.error('Supabase env vars not configured')
-    return NextResponse.json({ error: 'Server configuration error' }, { status: 500 })
+    return NextResponse.json<ErrorResponse>(
+      { error: 'Server configuration error', code: 'CONFIG_ERROR' },
+      { status: 500 }
+    )
   }
 
   const supabase = createClient(supabaseUrl, supabaseKey)
 
-  // Insert lead into Supabase
   const { error: dbError } = await supabase
     .from('agency_leads')
     .insert({
@@ -35,7 +66,10 @@ export async function POST(req: NextRequest) {
 
   if (dbError) {
     console.error('agency_leads insert error:', dbError)
-    return NextResponse.json({ error: 'Failed to save lead' }, { status: 500 })
+    return NextResponse.json<ErrorResponse>(
+      { error: 'Failed to save lead', code: 'DB_ERROR' },
+      { status: 500 }
+    )
   }
 
   // Notify Slack (non-fatal)
@@ -59,7 +93,7 @@ export async function POST(req: NextRequest) {
                 { type: 'mrkdwn', text: `*Company:*\n${company}` },
                 { type: 'mrkdwn', text: `*Role:*\n${role ?? '—'}` },
                 { type: 'mrkdwn', text: `*Process to automate:*\n${processToAutomate ?? '—'}` },
-                { type: 'mrkdwn', text: `*Monthly revenue:*\n${monthlyRevenue ?? '—'}` },
+                { type: 'mrkdwn', text: `*Annual revenue:*\n${monthlyRevenue ?? '—'}` },
               ],
             },
           ],

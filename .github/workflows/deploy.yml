@@ -52,13 +52,15 @@ jobs:
       - name: Submit Cloud Build (async)
         id: build
         run: |
+          SHORT_SHA="${GITHUB_SHA:0:7}"
           BUILD_ID=$(gcloud builds submit . \
             --project="${{ secrets.GCP_PROJECT }}" \
             --config=cloudbuild-api.yaml \
+            --substitutions="SHORT_SHA=${SHORT_SHA}" \
             --async \
             --format='value(id)')
           echo "build_id=$BUILD_ID" >> "$GITHUB_OUTPUT"
-          echo "Submitted build: $BUILD_ID"
+          echo "Submitted build: $BUILD_ID (SHORT_SHA=${SHORT_SHA})"
 
       - name: Wait for build to finish
         run: |
