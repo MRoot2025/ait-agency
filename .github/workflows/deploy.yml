@@ -87,15 +87,12 @@ jobs:
           REPO_NAME="${{ github.event.repository.name }}"
           GCP_PROJECT="${{ secrets.GCP_PROJECT }}"
           GSM="projects/${GCP_PROJECT}/secrets"
+          SECRETS="NEXT_PUBLIC_SUPABASE_URL=${GSM}/supabase__ait-agency__url:latest,SUPABASE_SERVICE_ROLE_KEY=${GSM}/supabase__ait-agency__service-role-key:latest,RESEND_API_KEY=${GSM}/resend__intelligent-group-ait__api-key:latest,SLACK_WEBHOOK_URL=${GSM}/SLACK_WEBHOOK_URL:latest"
           gcloud run deploy "$REPO_NAME" \
             --project="${GCP_PROJECT}" \
             --region=us-central1 \
             --image="us-central1-docker.pkg.dev/${GCP_PROJECT}/containers/${REPO_NAME}:latest" \
-            --set-secrets="\
-NEXT_PUBLIC_SUPABASE_URL=${GSM}/supabase__ait-agency__url:latest,\
-SUPABASE_SERVICE_ROLE_KEY=${GSM}/supabase__ait-agency__service-role-key:latest,\
-RESEND_API_KEY=${GSM}/resend__intelligent-group-ait__api-key:latest,\
-SLACK_WEBHOOK_URL=${GSM}/SLACK_WEBHOOK_URL:latest"
+            --set-secrets="${SECRETS}"
 
       - name: Verify deployment
         run: |
